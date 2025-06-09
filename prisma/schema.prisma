@@ -21,7 +21,8 @@ model News {
   id          Int       @id @default(autoincrement())
   title       String
   description String?
-  link        String    @unique
+  slug        String    @unique
+  content     String?
   thumbnail   String?
   pubDate     DateTime
   categoryId  Int

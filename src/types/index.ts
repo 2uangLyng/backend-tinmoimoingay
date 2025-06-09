@@ -7,8 +7,9 @@ export interface CreateNewsDto {
   description?: string;
   link: string;
   thumbnail?: string;
+  content: string;
   pubDate: string;
-  categoryId: number;
+  categoryName: string;
 }
 
 export interface PaginationQuery {
@@ -23,4 +24,4 @@ export interface PaginatedResponse<T> {
   page: number;
   pageSize: number;
   totalPages: number;
-} 
+}
