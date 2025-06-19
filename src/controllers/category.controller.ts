@@ -19,3 +19,11 @@ export const createCategory = asyncHandler(
     res.status(201).json(category);
   }
 );
+
+export const getNewsByCategory = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { category } = req.params;
+    const news = await CategoryService.getNewsByCategory(category);
+    res.json(news);
+  }
+);
