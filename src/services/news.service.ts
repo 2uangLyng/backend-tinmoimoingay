@@ -144,4 +144,30 @@ export class NewsService {
 
     return { news, total };
   }
-}     
+
+  static async getFeatured(): Promise<{ news: News[]; total: number }> {
+    const news = await prisma.news.findMany({
+      where: { isFeatured: true },
+      orderBy: { pubDate: "desc" },
+      include: { category: true },
+    });
+
+    const total = await prisma.news.count({
+      where: { isFeatured: true },
+    });
+
+    return { news, total };
+  }
+
+  static async getLatest(): Promise<{ news: News[]; total: number }> {
+    const [news, total] = await Promise.all([
+      prisma.news.findMany({
+        include: { category: true },
+        orderBy: { pubDate: "desc" },
+        take: 10,
+      }),
+      prisma.news.count(),
+    ]);
+    return { news, total };
+  }
+}

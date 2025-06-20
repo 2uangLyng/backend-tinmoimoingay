@@ -21,6 +21,7 @@ model News {
   id          Int       @id @default(autoincrement())
   title       String
   description String?
+  isFeatured  Boolean   @default(false)
   slug        String    @unique
   content     String?
   thumbnail   String?

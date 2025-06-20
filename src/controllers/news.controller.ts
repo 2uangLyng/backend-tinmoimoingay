@@ -88,3 +88,34 @@ export const searchNews = asyncHandler(async (req: Request, res: Response) => {
     total,
   });
 });
+export const getFeaturedNews = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { news, total } = await NewsService.getFeatured();
+
+    if (news.length === 0) {
+      res.status(404).json({ message: "News not found" });
+      return;
+    }
+
+    res.status(200).json({
+      data: news,
+      total,
+    });
+  }
+);
+
+export const getLatestNews = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { news, total } = await NewsService.getLatest();
+
+    if (!news || news.length === 0) {
+      res.status(404).json({ message: "News not found" });
+      return;
+    }
+
+    res.json({
+      data: news,
+      total,
+    });
+  }
+);
