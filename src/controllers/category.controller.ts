@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { CategoryService } from "../services/category.service";
 import asyncHandler from "express-async-handler";
 
@@ -25,5 +25,11 @@ export const getNewsByCategory = asyncHandler(
     const { category } = req.params;
     const news = await CategoryService.getNewsByCategory(category);
     res.json(news);
+  }
+);
+export const getNewGroupsByCategory = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const newsGroups = await CategoryService.getNewGroupsByCategory();
+    res.json(newsGroups);
   }
 );

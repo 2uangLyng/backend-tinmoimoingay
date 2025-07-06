@@ -170,4 +170,26 @@ export class NewsService {
     ]);
     return { news, total };
   }
+
+  static async getRelated(slug: string, limit: number = 4) {
+    // Tìm bài viết gốc để lấy categoryId
+    const currentNews = await prisma.news.findUnique({
+      where: { slug },
+      include: { category: true },
+    });
+
+    if (!currentNews) throw new Error("News not found");
+
+    // Lấy các bài viết liên quan (cùng category, khác ID)
+    const related = await prisma.news.findMany({
+      where: {
+        categoryId: currentNews.categoryId,
+        NOT: { slug: currentNews.slug },
+      },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
+
+    return related;
+  }
 }

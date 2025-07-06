@@ -119,3 +119,13 @@ export const getLatestNews = asyncHandler(
     });
   }
 );
+
+export const getRelatedNews = asyncHandler(
+  async (req: Request, res: Response) => {
+    const slug = req.params.slug;
+    const limit = parseInt(req.query.limit as string) || 4;
+
+    const relatedNews = await NewsService.getRelated(slug, limit);
+    res.json(relatedNews);
+  }
+);

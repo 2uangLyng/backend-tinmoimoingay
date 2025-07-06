@@ -8,6 +8,7 @@ import {
   searchNews,
   getFeaturedNews,
   getLatestNews,
+  getRelatedNews,
 } from "../controllers/news.controller";
 
 const router = Router();
@@ -15,6 +16,7 @@ const router = Router();
 router.get("/", getAllNews);
 router.get("/featured", getFeaturedNews);
 router.get("/latest", getLatestNews);
+router.get("/:slug/related", getRelatedNews);
 router.get("/:slug", getNewsBySlug);
 router.post("/", createNews);
 router.put("/:id", updateNews);

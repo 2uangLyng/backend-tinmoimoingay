@@ -49,4 +49,41 @@ export class CategoryService {
 
     return { news, total };
   }
+  static async getNewGroupsByCategory() {
+    const categories = await prisma.category.findMany();
+    const newsGroups = await Promise.all(
+      categories.map(async (category) => {
+        const news = await prisma.news.findMany({
+          where: { categoryId: category.id },
+          orderBy: { pubDate: "desc" },
+          take: 8,
+        });
+        return { category, news };
+      })
+    );
+    return newsGroups;
+  }
+  static async getNewsBySlug(
+    slug: string,
+    page = 1,
+    pageSize = 10
+  ): Promise<{ news: any[]; total: number }> {
+    const category = await this.findBySlug(slug);
+    if (!category) {
+      throw new Error(`Category '${slug}' not found`);
+    }
+
+    const [news, total] = await Promise.all([
+      prisma.news.findMany({
+        where: { categoryId: category.id },
+        include: { category: true },
+        orderBy: { pubDate: "desc" },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.news.count({ where: { categoryId: category.id } }),
+    ]);
+
+    return { news, total };
+  }
 }
